@@ -1,0 +1,268 @@
+'use client'
+
+import { useEffect, useMemo, useState } from 'react'
+import { createClient } from '@/lib/supabaseClient'
+import { SECTIONS, sectionTitle } from '@/lib/sections'
+import Nav from '@/components/Nav'
+
+type Submission = {
+  id: string
+  date: string
+  period: string
+  inspector: string
+  sections: Record<string, { doctor: string | null; caretaker: string | null; items: any[] }>
+  total_items: number
+  ok_items: number
+  score: number
+  created_at: string
+}
+
+function todayStr() {
+  return new Date().toISOString().slice(0, 10)
+}
+function daysAgoStr(n: number) {
+  const d = new Date()
+  d.setDate(d.getDate() - n)
+  return d.toISOString().slice(0, 10)
+}
+
+export default function DashboardPage() {
+  const supabase = createClient()
+  const [staffList, setStaffList] = useState<string[]>([])
+  const [rows, setRows] = useState<Submission[]>([])
+  const [rangeStart, setRangeStart] = useState(daysAgoStr(29))
+  const [rangeEnd, setRangeEnd] = useState(todayStr())
+  const [preset, setPreset] = useState('30')
+  const [sectionFilter, setSectionFilter] = useState('')
+  const [openFixer, setOpenFixer] = useState<string | null>(null)
+  const [msg, setMsg] = useState<string | null>(null)
+
+  useEffect(() => {
+    supabase.from('staff').select('name').order('name').then(({ data }) => {
+      if (data) setStaffList(data.map((d: any) => d.name))
+    })
+  }, [])
+
+  useEffect(() => {
+    load()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rangeStart, rangeEnd])
+
+  async function load() {
+    let q = supabase.from('submissions').select('*').order('created_at', { ascending: false })
+    if (rangeStart && rangeEnd) q = q.gte('date', rangeStart).lte('date', rangeEnd)
+    const { data } = await q
+    if (data) setRows(data as Submission[])
+  }
+
+  function applyPreset(p: string) {
+    setPreset(p)
+    if (p === 'all') {
+      setRangeStart('')
+      setRangeEnd('')
+    } else {
+      setRangeStart(daysAgoStr(parseInt(p, 10) - 1))
+      setRangeEnd(todayStr())
+    }
+  }
+
+  const avgScore = rows.length ? Math.round(rows.reduce((s, d) => s + d.score, 0) / rows.length) : 0
+
+  const issues = useMemo(() => {
+    const list: { date: string; period: string; sectionKey: string; item: any; subId: string }[] = []
+    rows.forEach((sub) => {
+      Object.entries(sub.sections || {}).forEach(([key, secData]) => {
+        ;(secData.items || []).forEach((it: any) => {
+          if (it.status === 'ไม่เรียบร้อย') list.push({ date: sub.date, period: sub.period, sectionKey: key, item: it, subId: sub.id })
+        })
+      })
+    })
+    return list
+  }, [rows])
+
+  const fixerCounts = useMemo(() => {
+    const counts: Record<string, number> = {}
+    staffList.forEach((n) => (counts[n] = 0))
+    issues.forEach((i) => {
+      if (i.item.fixer) counts[i.item.fixer] = (counts[i.item.fixer] || 0) + 1
+    })
+    return Object.entries(counts).sort((a, b) => b[1] - a[1])
+  }, [issues, staffList])
+
+  const fixerDetail = useMemo(() => {
+    if (!openFixer) return []
+    const grouped: Record<string, { count: number; lastDate: string }> = {}
+    issues
+      .filter((i) => i.item.fixer === openFixer)
+      .forEach((i) => {
+        const key = i.item.label
+        if (!grouped[key]) grouped[key] = { count: 0, lastDate: i.date }
+        grouped[key].count++
+        if (i.date > grouped[key].lastDate) grouped[key].lastDate = i.date
+      })
+    return Object.entries(grouped).sort((a, b) => b[1].count - a[1].count)
+  }, [openFixer, issues])
+
+  const filteredIssues = sectionFilter ? issues.filter((i) => i.sectionKey === sectionFilter) : issues
+
+  async function deleteSubmission(id: string) {
+    if (!confirm('ยืนยันลบข้อมูลการตรวจรอบนี้ทั้งรายการ?')) return
+    const { error } = await supabase.from('submissions').delete().eq('id', id)
+    if (error) setMsg('ลบไม่สำเร็จ')
+    else load()
+  }
+
+  async function exportExcel() {
+    const XLSX = await import('xlsx')
+    const issueRows = filteredIssues.map((i) => ({
+      วันที่: i.date,
+      ช่วง: i.period,
+      โซน: sectionTitle(i.sectionKey),
+      รายการ: i.item.label,
+      หมายเหตุ: i.item.note || '',
+      ผู้แก้ไข: i.item.fixer || '',
+      สถานะ: i.item.resolved ? 'แก้ไขแล้ว' : 'รอแก้ไข',
+    }))
+    if (!issueRows.length) {
+      setMsg('ไม่มีรายการไม่เรียบร้อยในช่วงที่เลือก')
+      return
+    }
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(issueRows), 'รายการไม่เรียบร้อย')
+    XLSX.writeFile(wb, `inspection-issues-${rangeStart || 'all'}_${rangeEnd || 'all'}.xlsx`)
+  }
+
+  return (
+    <div className="min-h-screen bg-[#f6f3f2] pb-16">
+      <header className="bg-gradient-to-br from-[#a5293c] to-[#7f1f2f] text-white px-4 pt-4 pb-1">
+        <h1 className="text-lg font-bold">📊 แดชบอร์ดสรุปผล</h1>
+        <p className="text-xs opacity-90 mb-2">คลินิกทันตกรรมเรดสไมล์ สาขาราชบุรี</p>
+        <Nav />
+      </header>
+
+      <main className="max-w-2xl mx-auto p-4">
+        <div className="bg-white border border-[#e7dedc] rounded-2xl p-4 mb-4">
+          <h2 className="text-[#a5293c] font-semibold text-sm mb-3">ช่วงเวลาที่แสดงผล</h2>
+          <div className="flex flex-wrap gap-2 mb-3">
+            {[['7', '7 วันล่าสุด'], ['30', 'รายเดือน (30 วัน)'], ['90', '3 เดือนล่าสุด'], ['all', 'ทั้งหมด']].map(([v, l]) => (
+              <button
+                key={v}
+                onClick={() => applyPreset(v)}
+                className={`rounded-lg border px-3 py-1.5 text-xs ${preset === v ? 'bg-[#a5293c] text-white border-[#a5293c]' : 'border-[#e7dedc]'}`}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
+          <div className="grid grid-cols-2 gap-3 mb-3">
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">ตั้งแต่วันที่</label>
+              <input type="date" value={rangeStart} onChange={(e) => { setRangeStart(e.target.value); setPreset('custom') }} className="w-full border border-[#e7dedc] rounded-lg px-3 py-2 text-sm" />
+            </div>
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">ถึงวันที่</label>
+              <input type="date" value={rangeEnd} onChange={(e) => { setRangeEnd(e.target.value); setPreset('custom') }} className="w-full border border-[#e7dedc] rounded-lg px-3 py-2 text-sm" />
+            </div>
+          </div>
+          <button onClick={exportExcel} className="w-full rounded-lg border border-[#e7dedc] py-2 text-sm">📥 ดาวน์โหลด Excel รายการไม่เรียบร้อย</button>
+          {msg && <p className="text-xs text-center mt-2 text-red-600">{msg}</p>}
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 mb-4">
+          <div className="bg-white border border-[#e7dedc] rounded-xl p-3 text-center">
+            <div className="text-xl font-extrabold text-[#a5293c]">{rows.length}</div>
+            <div className="text-[11px] text-gray-500">รอบตรวจในช่วงนี้</div>
+          </div>
+          <div className="bg-white border border-[#e7dedc] rounded-xl p-3 text-center">
+            <div className="text-xl font-extrabold text-[#a5293c]">{rows.length ? avgScore + '%' : '–'}</div>
+            <div className="text-[11px] text-gray-500">คะแนนเฉลี่ย</div>
+          </div>
+          <div className="bg-white border border-[#e7dedc] rounded-xl p-3 text-center">
+            <div className="text-xl font-extrabold text-[#a5293c]">{issues.length}</div>
+            <div className="text-[11px] text-gray-500">รายการไม่เรียบร้อย</div>
+          </div>
+        </div>
+
+        <div className="bg-white border border-[#e7dedc] rounded-2xl p-4 mb-4">
+          <h2 className="text-[#a5293c] font-semibold text-sm mb-3">สถิติผู้แก้ไขงาน</h2>
+          <table className="w-full text-xs">
+            <thead><tr className="text-gray-500 text-left"><th className="py-1">ชื่อ</th><th>ครั้ง</th><th></th></tr></thead>
+            <tbody>
+              {fixerCounts.map(([name, count]) => (
+                <tr key={name} className="border-t border-[#e7dedc]">
+                  <td className="py-1.5">{name}</td>
+                  <td className={count === 0 ? 'text-green-700 font-bold' : count >= 5 ? 'text-red-600 font-bold' : ''}>{count === 0 ? '0 (ดี)' : count}</td>
+                  <td>{count > 0 && <button onClick={() => setOpenFixer(name)} className="text-[#a5293c] underline">ดูรายการ</button>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {openFixer && (
+          <div className="bg-white border border-[#e7dedc] rounded-2xl p-4 mb-4">
+            <h2 className="text-[#a5293c] font-semibold text-sm mb-1">รายการที่ "{openFixer}" เคยต้องแก้ไข</h2>
+            <table className="w-full text-xs mt-2">
+              <thead><tr className="text-gray-500 text-left"><th className="py-1">รายการ</th><th>ครั้ง</th><th>ล่าสุด</th></tr></thead>
+              <tbody>
+                {fixerDetail.map(([label, info]) => (
+                  <tr key={label} className="border-t border-[#e7dedc]">
+                    <td className="py-1.5">{label.length > 40 ? label.slice(0, 40) + '…' : label}</td>
+                    <td className={info.count >= 3 ? 'text-red-600 font-bold' : ''}>{info.count}</td>
+                    <td>{info.lastDate}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        <div className="bg-white border border-[#e7dedc] rounded-2xl p-4 mb-4">
+          <h2 className="text-[#a5293c] font-semibold text-sm mb-3">รายการไม่เรียบร้อยล่าสุด</h2>
+          <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)} className="mb-3 border border-[#e7dedc] rounded-lg px-3 py-1.5 text-xs">
+            <option value="">ทุกโซน</option>
+            {SECTIONS.map((s) => <option key={s.key} value={s.key}>{s.title}</option>)}
+          </select>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead><tr className="text-gray-500 text-left"><th className="py-1">วันที่</th><th>ช่วง</th><th>โซน</th><th>รายการ</th><th>ผู้แก้ไข</th><th>สถานะ</th></tr></thead>
+              <tbody>
+                {filteredIssues.slice(0, 100).map((i, idx) => (
+                  <tr key={idx} className="border-t border-[#e7dedc]">
+                    <td className="py-1.5">{i.date}</td>
+                    <td>{i.period}</td>
+                    <td>{sectionTitle(i.sectionKey)}</td>
+                    <td>{i.item.label.length > 30 ? i.item.label.slice(0, 30) + '…' : i.item.label}</td>
+                    <td>{i.item.fixer || '-'}</td>
+                    <td className={i.item.resolved ? 'text-green-700' : 'text-red-600'}>{i.item.resolved ? 'แก้ไขแล้ว' : 'รอแก้ไข'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="bg-white border border-[#e7dedc] rounded-2xl p-4">
+          <h2 className="text-[#a5293c] font-semibold text-sm mb-3">ประวัติการตรวจล่าสุด</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead><tr className="text-gray-500 text-left"><th className="py-1">วันที่</th><th>ช่วง</th><th>ผู้ตรวจ</th><th>คะแนน</th><th>บันทึกจริง</th><th></th></tr></thead>
+              <tbody>
+                {rows.slice(0, 30).map((d) => (
+                  <tr key={d.id} className="border-t border-[#e7dedc]">
+                    <td className="py-1.5">{d.date}</td>
+                    <td>{d.period}</td>
+                    <td>{d.inspector}</td>
+                    <td className={d.score >= 90 ? 'text-green-700' : d.score < 70 ? 'text-red-600' : ''}>{d.score}%</td>
+                    <td>{new Date(d.created_at).toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' })}</td>
+                    <td><button onClick={() => deleteSubmission(d.id)} className="text-red-600 underline">ลบ</button></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  )
+}
