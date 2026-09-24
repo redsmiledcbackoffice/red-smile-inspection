@@ -90,9 +90,9 @@ export default function TasksPage() {
         <div className="bg-white border border-[#e7dedc] rounded-2xl p-4 mb-4">
           <h2 className="text-[#a5293c] font-semibold text-sm mb-1">งานที่ต้องแก้ไข</h2>
           <p className="text-xs text-gray-500 mb-3">ไม่กระทบคะแนนที่บันทึกไว้แล้ว — ใช้ติดตามงานเท่านั้น</p>
-          <select value={who} onChange={(e) => setWho(e.target.value)} className="mb-3 border border-[#e7dedc] rounded-lg px-3 py-1.5 text-xs">
+          <select value={who} onChange={(e) => setWho(e.target.value)} className="mb-3 bg-white text-gray-900 border border-[#e7dedc] rounded-lg px-3 py-1.5 text-xs">
             <option value="" className="bg-white text-gray-900">ดูงานของ: ทุกคน</option>
-            {staffList.map((n) => <option key={n} value={n} >{n}</option>)}
+            {staffList.map((n) => <option key={n} value={n} className="bg-white text-gray-900">{n}</option>)}
           </select>
 
           {pending.length === 0 ? (
