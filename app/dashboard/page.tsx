@@ -246,7 +246,7 @@ export default function DashboardPage() {
           <h2 className="text-[#a5293c] font-semibold text-sm mb-3">ประวัติการตรวจล่าสุด</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-xs ">
-              <thead><tr cclassName="text-gray-700 font-semibold text-left"><th className="py-1">วันที่</th><th>ช่วง</th><th>ผู้ตรวจ</th><th>คะแนน</th><th>บันทึกจริง</th><th></th></tr></thead>
+              <thead><tr className="text-gray-700 font-semibold text-left"><th className="py-1">วันที่</th><th>ช่วง</th><th>ผู้ตรวจ</th><th>คะแนน</th><th>บันทึกจริง</th><th></th></tr></thead>
               <tbody>
                 {rows.slice(0, 30).map((d) => (
                   <tr key={d.id} className="border-t border-[#e7dedc]">
