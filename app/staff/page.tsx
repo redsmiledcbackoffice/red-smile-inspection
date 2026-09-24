@@ -47,7 +47,7 @@ export default function StaffPage() {
 
           <div className="flex flex-wrap gap-2 mb-4">
             {staff.map((s) => (
-              <span key={s.id} className="inline-flex items-center gap-2 bg-[#f6f3f2] border border-[#e7dedc] rounded-full pl-3 pr-1 py-1 text-sm">
+              <span key={s.id} className="inline-flex items-center gap-2 bg-[#f6f3f2] text-gray-900 border border-[#e7dedc] rounded-full pl-3 pr-1 py-1 text-sm font-medium">
                 {s.name}
                 <button onClick={() => removeStaff(s.id)} className="text-red-600 px-1">✕</button>
               </span>
@@ -61,9 +61,9 @@ export default function StaffPage() {
               onChange={(e) => setNewName(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') addStaff() }}
               placeholder="พิมพ์ชื่อใหม่..."
-              className="flex-1 border border-[#e7dedc] rounded-lg px-3 py-2 text-sm"
+              className="flex-1 bg-white text-gray-900 placeholder-gray-400 border border-[#e7dedc] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#a5293c]"
             />
-            <button onClick={addStaff} className="rounded-lg border border-[#e7dedc] px-4 text-sm">+ เพิ่ม</button>
+            <button onClick={addStaff} className="rounded-lg bg-[#a5293c] text-white px-4 text-sm font-medium hover:bg-[#8e2232] transition-colors">+ เพิ่ม</button>
           </div>
           {msg && <p className="text-xs text-red-600 mt-2">{msg}</p>}
         </div>

@@ -148,23 +148,23 @@ export default function DashboardPage() {
               <button
                 key={v}
                 onClick={() => applyPreset(v)}
-                className={`rounded-lg border px-3 py-1.5 text-xs ${preset === v ? 'bg-[#a5293c] text-white border-[#a5293c]' : 'border-[#e7dedc]'}`}
+                className={`rounded-lg border px-3 py-1.5 text-xs ${preset === v ? 'bg-[#a5293c] text-white border-[#a5293c]' : 'bg-white text-gray-800 border-[#e7dedc]'}`}
               >
                 {l}
               </button>
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-3 mb-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
             <div>
-              <label className="block text-xs text-gray-500 mb-1">ตั้งแต่วันที่</label>
-              <input type="date" value={rangeStart} onChange={(e) => { setRangeStart(e.target.value); setPreset('custom') }} className="w-full border border-[#e7dedc] rounded-lg px-3 py-2 text-sm" />
+              <label className="block text-xs text-gray-700 font-medium mb-1">ตั้งแต่วันที่</label>
+              <input type="date" value={rangeStart} onChange={(e) => { setRangeStart(e.target.value); setPreset('custom') }} className="w-full bg-white text-gray-900 border border-[#e7dedc] rounded-lg px-3 py-2 text-sm" />
             </div>
             <div>
-              <label className="block text-xs text-gray-500 mb-1">ถึงวันที่</label>
-              <input type="date" value={rangeEnd} onChange={(e) => { setRangeEnd(e.target.value); setPreset('custom') }} className="w-full border border-[#e7dedc] rounded-lg px-3 py-2 text-sm" />
+              <label className="block text-xs text-gray-700 font-medium mb-1">ถึงวันที่</label>
+              <input type="date" value={rangeEnd} onChange={(e) => { setRangeEnd(e.target.value); setPreset('custom') }} className="w-full bg-white text-gray-900 border border-[#e7dedc] rounded-lg px-3 py-2 text-sm" />
             </div>
           </div>
-          <button onClick={exportExcel} className="w-full rounded-lg border border-[#e7dedc] py-2 text-sm">📥 ดาวน์โหลด Excel รายการไม่เรียบร้อย</button>
+          <button onClick={exportExcel} className="w-full bg-white text-gray-900 font-medium rounded-lg border border-[#e7dedc] py-2 text-sm hover:bg-gray-50">📥 ดาวน์โหลด Excel รายการไม่เรียบร้อย</button>
           {msg && <p className="text-xs text-center mt-2 text-red-600">{msg}</p>}
         </div>
 
@@ -185,8 +185,8 @@ export default function DashboardPage() {
 
         <div className="bg-white border border-[#e7dedc] rounded-2xl p-4 mb-4">
           <h2 className="text-[#a5293c] font-semibold text-sm mb-3">สถิติผู้แก้ไขงาน</h2>
-          <table className="w-full text-xs">
-            <thead><tr className="text-gray-500 text-left"><th className="py-1">ชื่อ</th><th>ครั้ง</th><th></th></tr></thead>
+          <table className="w-full text-xs text-gray-900">
+            <thead><tr className="text-gray-700 font-semibold text-left"><th className="py-1">ชื่อ</th><th>ครั้ง</th><th></th></tr></thead>
             <tbody>
               {fixerCounts.map(([name, count]) => (
                 <tr key={name} className="border-t border-[#e7dedc]">
@@ -203,7 +203,7 @@ export default function DashboardPage() {
           <div className="bg-white border border-[#e7dedc] rounded-2xl p-4 mb-4">
             <h2 className="text-[#a5293c] font-semibold text-sm mb-1">รายการที่ "{openFixer}" เคยต้องแก้ไข</h2>
             <table className="w-full text-xs mt-2">
-              <thead><tr className="text-gray-500 text-left"><th className="py-1">รายการ</th><th>ครั้ง</th><th>ล่าสุด</th></tr></thead>
+              <thead><tr className="text-gray-700 font-semibold text-left"><th className="py-1">รายการ</th><th>ครั้ง</th><th>ล่าสุด</th></tr></thead>
               <tbody>
                 {fixerDetail.map(([label, info]) => (
                   <tr key={label} className="border-t border-[#e7dedc]">
@@ -219,13 +219,13 @@ export default function DashboardPage() {
 
         <div className="bg-white border border-[#e7dedc] rounded-2xl p-4 mb-4">
           <h2 className="text-[#a5293c] font-semibold text-sm mb-3">รายการไม่เรียบร้อยล่าสุด</h2>
-          <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)} className="mb-3 border border-[#e7dedc] rounded-lg px-3 py-1.5 text-xs">
-            <option value="">ทุกโซน</option>
-            {SECTIONS.map((s) => <option key={s.key} value={s.key}>{s.title}</option>)}
+          <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)} className="mb-3 bg-white text-gray-900 border border-[#e7dedc] rounded-lg px-3 py-1.5 text-xs">
+            <option value="" className="bg-white text-gray-900">ทุกโซน</option>
+            {SECTIONS.map((s) => <option key={s.key} value={s.key} className="bg-white text-gray-900">{s.title}</option>)}
           </select>
           <div className="overflow-x-auto">
-            <table className="w-full text-xs">
-              <thead><tr className="text-gray-500 text-left"><th className="py-1">วันที่</th><th>ช่วง</th><th>โซน</th><th>รายการ</th><th>ผู้แก้ไข</th><th>สถานะ</th></tr></thead>
+            <table className="w-full text-xs text-gray-900">
+              <thead><tr className="text-gray-700 font-semibold text-left"><th className="py-1">วันที่</th><th>ช่วง</th><th>โซน</th><th>รายการ</th><th>ผู้แก้ไข</th><th>สถานะ</th></tr></thead>
               <tbody>
                 {filteredIssues.slice(0, 100).map((i, idx) => (
                   <tr key={idx} className="border-t border-[#e7dedc]">
@@ -245,8 +245,8 @@ export default function DashboardPage() {
         <div className="bg-white border border-[#e7dedc] rounded-2xl p-4">
           <h2 className="text-[#a5293c] font-semibold text-sm mb-3">ประวัติการตรวจล่าสุด</h2>
           <div className="overflow-x-auto">
-            <table className="w-full text-xs">
-              <thead><tr className="text-gray-500 text-left"><th className="py-1">วันที่</th><th>ช่วง</th><th>ผู้ตรวจ</th><th>คะแนน</th><th>บันทึกจริง</th><th></th></tr></thead>
+            <table className="w-full text-xs ">
+              <thead><tr cclassName="text-gray-700 font-semibold text-left"><th className="py-1">วันที่</th><th>ช่วง</th><th>ผู้ตรวจ</th><th>คะแนน</th><th>บันทึกจริง</th><th></th></tr></thead>
               <tbody>
                 {rows.slice(0, 30).map((d) => (
                   <tr key={d.id} className="border-t border-[#e7dedc]">

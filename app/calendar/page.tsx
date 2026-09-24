@@ -69,9 +69,9 @@ export default function CalendarPage() {
       <main className="max-w-2xl mx-auto p-4">
         <div className="bg-white border border-[#e7dedc] rounded-2xl p-4 mb-4">
           <div className="flex items-center justify-between mb-3">
-            <button onClick={() => setCursor(new Date(year, month - 1, 1))} className="text-sm rounded border border-[#e7dedc] px-2 py-1">‹ ก่อนหน้า</button>
-            <h2 className="font-semibold text-sm">{MONTHS_TH[month]} {year + 543}</h2>
-            <button onClick={() => setCursor(new Date(year, month + 1, 1))} className="text-sm rounded border border-[#e7dedc] px-2 py-1">ถัดไป ›</button>
+            <button onClick={() => setCursor(new Date(year, month - 1, 1))} className="text-sm bg-white text-gray-900 rounded border border-[#e7dedc] px-2 py-1">‹ ก่อนหน้า</button>
+            <h2 className="font-semibold text-sm text-gray-900">{MONTHS_TH[month]} {year + 543}</h2>
+            <button onClick={() => setCursor(new Date(year, month + 1, 1))} className="text-sm bg-white text-gray-900 rounded border border-[#e7dedc] px-2 py-1">ถัดไป ›</button>
           </div>
 
           <div className="flex flex-wrap gap-3 text-[11px] text-gray-500 mb-2">

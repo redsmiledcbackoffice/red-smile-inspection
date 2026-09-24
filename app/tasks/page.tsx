@@ -91,8 +91,8 @@ export default function TasksPage() {
           <h2 className="text-[#a5293c] font-semibold text-sm mb-1">งานที่ต้องแก้ไข</h2>
           <p className="text-xs text-gray-500 mb-3">ไม่กระทบคะแนนที่บันทึกไว้แล้ว — ใช้ติดตามงานเท่านั้น</p>
           <select value={who} onChange={(e) => setWho(e.target.value)} className="mb-3 border border-[#e7dedc] rounded-lg px-3 py-1.5 text-xs">
-            <option value="">ดูงานของ: ทุกคน</option>
-            {staffList.map((n) => <option key={n} value={n}>{n}</option>)}
+            <option value="" className="bg-white text-gray-900">ดูงานของ: ทุกคน</option>
+            {staffList.map((n) => <option key={n} value={n} >{n}</option>)}
           </select>
 
           {pending.length === 0 ? (
@@ -100,7 +100,7 @@ export default function TasksPage() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
-                <thead><tr className="text-gray-500 text-left"><th className="py-1">วันที่</th><th>ช่วง</th><th>โซน</th><th>รายการ</th><th>ผู้แก้ไข</th><th>รอมาแล้ว</th><th></th></tr></thead>
+                <thead><tr className="text-gray-700 font-semibold text-left"><th className="py-1">วันที่</th><th>ช่วง</th><th>โซน</th><th>รายการ</th><th>ผู้แก้ไข</th><th>รอมาแล้ว</th><th></th></tr></thead>
                 <tbody>
                   {pending.map((i, idx) => {
                     const elapsed = now - i.foundAt
@@ -128,7 +128,7 @@ export default function TasksPage() {
             <p className="text-center text-sm text-gray-500 py-4">ยังไม่มีประวัติ</p>
           ) : (
             <table className="w-full text-xs">
-              <thead><tr className="text-gray-500 text-left"><th className="py-1">วันที่</th><th>โซน</th><th>รายการ</th><th>ผู้แก้ไข</th><th>แก้ไขเมื่อ</th></tr></thead>
+              <thead><tr className="text-gray-700 font-semibold text-left"><th className="py-1">วันที่</th><th>โซน</th><th>รายการ</th><th>ผู้แก้ไข</th><th>แก้ไขเมื่อ</th></tr></thead>
               <tbody>
                 {resolved.map((i, idx) => (
                   <tr key={idx} className="border-t border-[#e7dedc]">
