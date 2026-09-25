@@ -252,11 +252,13 @@ export default function DashboardPage() {
               <tbody>
                 {rows.slice(0, 30).map((d) => (
                   <tr key={d.id} className="border-t border-[#e7dedc]">
-                    <td className="py-1.5">{d.date}</td>
-                    <td>{d.period}</td>
-                    <td>{d.inspector}</td>
-                    <td className={d.score >= 90 ? 'text-green-700' : d.score < 70 ? 'text-red-600' : ''}>{d.score}%</td>
-                    <td>{new Date(d.created_at).toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' })}</td>
+                    <td className="py-1.5 text-gray-900 font-medium">{d.date}</td>
+                    <td className="!text-gray-900">{d.period}</td>
+                    <td className="!text-gray-900">{d.inspector}</td>
+                    <td className={d.score >= 90 ? 'text-green-700 font font-bold' : d.score < 70 ? 'text-red-600 font-bold' : '!text-gray-900 font-bold'}>
+                      {d.score}%</td>
+                    <td className="!text-gray-900">
+                      {new Date(d.created_at).toLocaleString('th-TH', { dateStyle: 'short', timeStyle: 'short' })}</td>
                     <td><button onClick={() => deleteSubmission(d.id)} className="text-red-600 underline">ลบ</button></td>
                   </tr>
                 ))}
