@@ -158,11 +158,11 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
             <div>
               <label className="block text-xs text-gray-500 mb-1">ตั้งแต่วันที่</label>
-              <input type="date" value={rangeStart} onChange={(e) => { setRangeStart(e.target.value); setPreset('custom') }} className="w-full border border-[#e7dedc] rounded-lg px-3 py-2 text-sm" />
+              <input type="date" value={rangeStart} onChange={(e) => { setRangeStart(e.target.value); setPreset('custom') }} className="w-full max-w-full border border-[#e7dedc] rounded-lg px-3 py-2 text-sm" />
             </div>
             <div>
               <label className="block text-xs text-gray-500 mb-1">ถึงวันที่</label>
-              <input type="date" value={rangeEnd} onChange={(e) => { setRangeEnd(e.target.value); setPreset('custom') }} className="w-full border border-[#e7dedc] rounded-lg px-3 py-2 text-sm" />
+              <input type="date" value={rangeEnd} onChange={(e) => { setRangeEnd(e.target.value); setPreset('custom') }} className="w-full max-w-full border border-[#e7dedc] rounded-lg px-3 py-2 text-sm" />
             </div>
           </div>
           <button onClick={exportExcel} className="w-full rounded-lg border border-[#e7dedc] py-2 text-sm mb-2">📥 ดาวน์โหลด Excel รายการไม่เรียบร้อย</button>
