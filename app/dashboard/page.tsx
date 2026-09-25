@@ -141,8 +141,8 @@ export default function DashboardPage() {
         <Nav />
       </header>
 
-      <main className="max-w-2xl mx-auto p-4">
-        <div className="bg-white border border-[#e7dedc] rounded-2xl p-4 mb-4">
+      <main className="max-w-2xl mx-auto p-4 w-full box-border">
+        <div className="bg-white border border-[#e7dedc] rounded-2xl p-4 mb-4 w-full box-border">
           <h2 className="text-[#a5293c] font-semibold text-sm mb-3">ช่วงเวลาที่แสดงผล</h2>
           <div className="flex flex-wrap gap-2 mb-3">
             {[['7', '7 วันล่าสุด'], ['30', 'รายเดือน (30 วัน)'], ['90', '3 เดือนล่าสุด'], ['all', 'ทั้งหมด']].map(([v, l]) => (
@@ -158,14 +158,14 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
             <div>
               <label className="block text-xs text-gray-500 mb-1">ตั้งแต่วันที่</label>
-              <input type="date" value={rangeStart} onChange={(e) => { setRangeStart(e.target.value); setPreset('custom') }} className="w-full max-w-full border border-[#e7dedc] rounded-lg px-3 py-2 text-sm" />
+              <input type="date" value={rangeStart} onChange={(e) => { setRangeStart(e.target.value); setPreset('custom') }} className="w-full max-w-full box-border bg-white text-grey-900 border border-[#e7dedc] rounded-lg px-3 py-2 text-sm appearance-none" />
             </div>
             <div>
               <label className="block text-xs text-gray-500 mb-1">ถึงวันที่</label>
-              <input type="date" value={rangeEnd} onChange={(e) => { setRangeEnd(e.target.value); setPreset('custom') }} className="w-full max-w-full border border-[#e7dedc] rounded-lg px-3 py-2 text-sm" />
+              <input type="date" value={rangeEnd} onChange={(e) => { setRangeEnd(e.target.value); setPreset('custom') }} className="w-full max-w-full box-border bg-white text-grey-900 border border-[#e7dedc] rounded-lg px-3 py-2 text-sm appearance-none" />
             </div>
           </div>
-          <button onClick={exportExcel} className="w-full rounded-lg border border-[#e7dedc] py-2 text-sm mb-2">📥 ดาวน์โหลด Excel รายการไม่เรียบร้อย</button>
+          <button onClick={exportExcel} className="w-full bg-white text-grey-900 font-medium rounded-lg border border-[#e7dedc] py-2 text-sm hover:bg-gray-50 box-border">📥 ดาวน์โหลด Excel รายการไม่เรียบร้อย</button>
           <SendLineButton rows={rows} filteredIssues={filteredIssues} />
           {msg && <p className="text-xs text-center mt-2 text-red-600">{msg}</p>}
         </div>
