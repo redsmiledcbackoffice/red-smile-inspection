@@ -193,7 +193,7 @@ export default function DashboardPage() {
               {fixerCounts.map(([name, count]) => (
                 <tr key={name} className="border-t border-[#e7dedc]">
                   <td className="py-1.5 text-gray-900 font-medium">{name}</td>
-                  <td className={count === 0 ? 'text-green-700 font-bold' : count >= 5 ? 'text-red-600 font-bold' : ''}>{count === 0 ? '0 (ดี)' : count}</td>
+                  <td className={count === 0 ? 'text-green-700 font-bold' : 'text-red-600 font-bold !text-red-600'}>{count === 0 ? '0 (ดี)' : count}</td>
                   <td>{count > 0 && <button onClick={() => setOpenFixer(name)} className="text-[#a5293c] underline">ดูรายการ</button>}</td>
                 </tr>
               ))}
@@ -209,7 +209,7 @@ export default function DashboardPage() {
               <tbody>
                 {fixerDetail.map(([label, info]) => (
                   <tr key={label} className="border-t border-[#e7dedc]">
-                    <td className="py-1.5">{label.length > 40 ? label.slice(0, 40) + '…' : label}</td>
+                    <td className="py-2 px-1 !text-gray-900 font-medium whitespace-normal leading-tight">{label}</td>
                     <td className={info.count >= 3 ? 'text-red-600 font-bold' : ''}>{info.count}</td>
                     <td>{info.lastDate}</td>
                   </tr>
@@ -225,18 +225,25 @@ export default function DashboardPage() {
             <option value="">ทุกโซน</option>
             {SECTIONS.map((s) => <option key={s.key} value={s.key}>{s.title}</option>)}
           </select>
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs">
-              <thead><tr className="text-gray-500 text-left"><th className="py-1">วันที่</th><th>ช่วง</th><th>โซน</th><th>รายการ</th><th>ผู้แก้ไข</th><th>สถานะ</th></tr></thead>
+          <div className="overflow-x-auto w-full">
+            <table className="w-full text-xs min-w-[500px]">
+              <thead><tr className="text-gray-900 text-left border-b border-[#e7dedc]">
+                <th className="py-2 px-1 whitespace-nowrap">วันที่</th>
+                <th className="px-1 whitespace-nowrap">ช่วง</th>
+                <th className="px-1 whitespace-nowrap">โซน</th>
+                <th className="px-1 min-w-[150px]">รายการ</th>
+                <th className="px-1 whitespace-nowrap">ผู้แก้ไข</th>
+                <th className="px-1 whitespace-nowrap">สถานะ</th>
+              </tr></thead>
               <tbody>
                 {filteredIssues.slice(0, 100).map((i, idx) => (
                   <tr key={idx} className="border-t border-[#e7dedc]">
-                    <td className="py-1.5">{i.date}</td>
-                    <td>{i.period}</td>
-                    <td>{sectionTitle(i.sectionKey)}</td>
-                    <td>{i.item.label.length > 30 ? i.item.label.slice(0, 30) + '…' : i.item.label}</td>
-                    <td>{i.item.fixer || '-'}</td>
-                    <td className={i.item.resolved ? 'text-green-700' : 'text-red-600'}>{i.item.resolved ? 'แก้ไขแล้ว' : 'รอแก้ไข'}</td>
+                    <td className="py-2 px-1 !text-gray-900 font-medium whitespace-nowrap">{i.date}</td>
+                    <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{i.period}</td>
+                    <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{sectionTitle(i.sectionKey)}</td>
+                    <td className="px-1 !text-gray-900 font-medium leading-tight">{i.item.label.length > 30 ? i.item.label.slice(0, 30) + '…' : i.item.label}</td>
+                    <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{i.item.fixer || '-'}</td>
+                    <td className={`px-1 font-bold whitespace-nowrap ${i.item.resolved ? 'text-green-700' : 'text-red-600 !text-red-600'}`}>{i.item.resolved ? 'แก้ไขแล้ว' : 'รอแก้ไข'}</td>
                   </tr>
                 ))}
               </tbody>

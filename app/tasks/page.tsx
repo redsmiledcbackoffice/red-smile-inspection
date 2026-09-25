@@ -98,21 +98,29 @@ export default function TasksPage() {
           {pending.length === 0 ? (
             <p className="text-center text-sm text-gray-500 py-6">ไม่มีงานค้าง ทุกอย่างเรียบร้อย 🎉</p>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead><tr className="text-gray-700 font-semibold text-left"><th className="py-1">วันที่</th><th>ช่วง</th><th>โซน</th><th>รายการ</th><th>ผู้แก้ไข</th><th>รอมาแล้ว</th><th></th></tr></thead>
+            <div className="overflow-x-auto w-full">
+              <table className="w-full text-xs min-w-[500px]">
+                <thead><tr className="text-gray-700 font-semibold text-left border-b border-[#e7dedc]">
+                  <th className="py-2 px-1 whitespace-nowrap">วันที่</th>
+                  <th className="px-1 whitespace-nowrap">ช่วง</th>
+                  <th className="px-1 whitespace-nowrap">โซน</th>
+                  <th className="px-1 min-w-[150px]">รายการ</th>
+                  <th className="px-1 whitespace-nowrap">ผู้แก้ไข</th>
+                  <th className="px-1 whitespace-nowrap">รอมาแล้ว</th>
+                  <th className="px-1 text-right whitespace-nowrap"></th>
+                </tr></thead>
                 <tbody>
                   {pending.map((i, idx) => {
                     const elapsed = now - i.foundAt
                     return (
                       <tr key={idx} className="border-t border-[#e7dedc]">
-                        <td className="py-1.5">{i.date}</td>
-                        <td>{i.period}</td>
-                        <td>{sectionTitle(i.sectionKey)}</td>
-                        <td>{i.item.label.length > 30 ? i.item.label.slice(0, 30) + '…' : i.item.label}</td>
-                        <td>{i.item.fixer || '-'}</td>
+                        <td className="py-2 px-1 !text-gray-900 font-medium whitespace-nowrap">{i.date}</td>
+                        <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{i.period}</td>
+                        <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{sectionTitle(i.sectionKey)}</td>
+                        <td className="px-1 !text-gray-900 font-medium leading-tight">{i.item.label.length > 30 ? i.item.label.slice(0, 30) + '…' : i.item.label}</td>
+                        <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{i.item.fixer || '-'}</td>
                         <td className={elapsed > 24 * 3600 * 1000 ? 'text-red-600 font-bold' : ''}>{formatDuration(elapsed)}</td>
-                        <td><button onClick={() => markResolved(i.subId, i.sectionKey, i.idx)} className="rounded border border-[#e7dedc] px-2 py-1">แก้ไขแล้ว</button></td>
+                        <td><button onClick={() => markResolved(i.subId, i.sectionKey, i.idx)} className="bg-[#17c964] hover:bg-[12a150] !text-white font-bold text-xs px-1.5 py-1.5 rounded-lg shadow-sm whitespace-nowrap">แก้ไขแล้ว</button></td>
                       </tr>
                     )
                   })}

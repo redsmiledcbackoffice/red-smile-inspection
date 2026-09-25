@@ -83,7 +83,21 @@ export default function FormPage() {
       sectionsPayload[s.key] = { doctor: state.doctor || null, caretaker: state.caretaker || null, items }
     })
 
-    const score = totalItems ? Math.round((okItems / totalItems) * 100) : 0
+    let evaluatedItems = 0
+    let okItems = 0
+    Object.values(section).forEach((sec) => {
+      if (sec.doctor || sec.items?.some((i: any) => i.status)) {
+        sec.items.forEach((it: any) => {
+          if (it.status) {
+            evaluatedItems++
+            if (it.status === 'เรียบร้อย') okItems++
+          }
+        })
+      }
+    })
+    const score = evaluatedItems > 0  ? Math.round((okItems / evaluatedItems) * 100) : 100
+
+    //const score = totalItems ? Math.round((okItems / totalItems) * 100) : 0
 
     setSaving(true)
     const { error } = await supabase.from('submissions').insert({
