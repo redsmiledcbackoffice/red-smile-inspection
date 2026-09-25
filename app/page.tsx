@@ -125,7 +125,7 @@ export default function FormPage() {
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full max-w-full border border-[#e7dedc] rounded-lg px-3 py-2 text-sm"
+                className="w-full max-w-full box-border bg-white text-gray-900 !text-gray-900 !bg-white border border-[#e7dedc] rounded-xl px-3 py-2.5 text-sm appearance-none"
               />
             </div>
             <div>

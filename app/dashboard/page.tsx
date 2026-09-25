@@ -149,7 +149,7 @@ export default function DashboardPage() {
               <button
                 key={v}
                 onClick={() => applyPreset(v)}
-                className={`rounded-lg border px-3 py-1.5 text-xs ${preset === v ? 'bg-[#a5293c] text-white border-[#a5293c]' : 'border-[#e7dedc]'}`}
+                className={`rounded-lg border px-3 py-1.5 text-xs ${preset === v ? 'bg-[#a5293c] text-white border-[#a5293c]' : 'bg-white text-gray-900 border-[#e7dedc]'}`}
               >
                 {l}
               </button>
@@ -158,14 +158,14 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
             <div>
               <label className="block text-xs text-gray-500 mb-1">ตั้งแต่วันที่</label>
-              <input type="date" value={rangeStart} onChange={(e) => { setRangeStart(e.target.value); setPreset('custom') }} className="w-full max-w-full box-border bg-white text-grey-900 border border-[#e7dedc] rounded-lg px-3 py-2 text-sm appearance-none" />
+              <input type="date" value={rangeStart} onChange={(e) => { setRangeStart(e.target.value); setPreset('custom') }} className="w-full max-w-full box-border bg-white text-gray-900 !text-gray-900 !bg-white border border-[#e7dedc] rounded-lg px-3 py-2 text-sm appearance-none" />
             </div>
             <div>
               <label className="block text-xs text-gray-500 mb-1">ถึงวันที่</label>
-              <input type="date" value={rangeEnd} onChange={(e) => { setRangeEnd(e.target.value); setPreset('custom') }} className="w-full max-w-full box-border bg-white text-grey-900 border border-[#e7dedc] rounded-lg px-3 py-2 text-sm appearance-none" />
+              <input type="date" value={rangeEnd} onChange={(e) => { setRangeEnd(e.target.value); setPreset('custom') }} className="w-full max-w-full box-border bg-white text-gray-900 !text-gray-900 !bg-white border border-[#e7dedc] rounded-lg px-3 py-2 text-sm appearance-none" />
             </div>
           </div>
-          <button onClick={exportExcel} className="w-full bg-white text-grey-900 font-medium rounded-lg border border-[#e7dedc] py-2 text-sm hover:bg-gray-50 box-border">📥 ดาวน์โหลด Excel รายการไม่เรียบร้อย</button>
+          <button onClick={exportExcel} className="w-full bg-white text-gray-900 !text-gray-900 !bg-white font-medium rounded-lg border border-[#e7dedc] py-2 text-sm hover:bg-gray-50 box-border">📥 ดาวน์โหลด Excel รายการไม่เรียบร้อย</button>
           <SendLineButton rows={rows} filteredIssues={filteredIssues} />
           {msg && <p className="text-xs text-center mt-2 text-red-600">{msg}</p>}
         </div>
@@ -192,7 +192,7 @@ export default function DashboardPage() {
             <tbody>
               {fixerCounts.map(([name, count]) => (
                 <tr key={name} className="border-t border-[#e7dedc]">
-                  <td className="py-1.5">{name}</td>
+                  <td className="py-1.5 text-gray-900 font-medium">{name}</td>
                   <td className={count === 0 ? 'text-green-700 font-bold' : count >= 5 ? 'text-red-600 font-bold' : ''}>{count === 0 ? '0 (ดี)' : count}</td>
                   <td>{count > 0 && <button onClick={() => setOpenFixer(name)} className="text-[#a5293c] underline">ดูรายการ</button>}</td>
                 </tr>
@@ -221,7 +221,7 @@ export default function DashboardPage() {
 
         <div className="bg-white border border-[#e7dedc] rounded-2xl p-4 mb-4">
           <h2 className="text-[#a5293c] font-semibold text-sm mb-3">รายการไม่เรียบร้อยล่าสุด</h2>
-          <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)} className="mb-3 border border-[#e7dedc] rounded-lg px-3 py-1.5 text-xs">
+          <select value={sectionFilter} onChange={(e) => setSectionFilter(e.target.value)} className="mb-3 bg-white text-gray-900 !text-gray-900 !bg-white border border-[#e7dedc] rounded-lg px-3 py-1.5 text-xs w-full max-w-full font-medium">
             <option value="">ทุกโซน</option>
             {SECTIONS.map((s) => <option key={s.key} value={s.key}>{s.title}</option>)}
           </select>
