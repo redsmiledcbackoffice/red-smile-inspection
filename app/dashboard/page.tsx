@@ -36,6 +36,47 @@ export default function DashboardPage() {
   const [sectionFilter, setSectionFilter] = useState('')
   const [openFixer, setOpenFixer] = useState<string | null>(null)
   const [msg, setMsg] = useState<string | null>(null)
+  const [sendingLine, setSendingLine] = useState(false)
+
+  const handleSendLineSummary = async () => {
+  setSendingLine(true)
+  
+  const todayStr = new Date().toISOString().split('T')[0]
+  const mRow = rows.find(r => r.date === todayStr && r.period === 'เช้า')
+  const eRow = rows.find(r => r.date === todayStr && r.period === 'เย็น')
+  
+  const pending = filteredIssues.filter(i => !i.item.resolved).map(i => ({
+    label: i.item.label,
+    fixer: i.item.fixer
+  }))
+
+  try {
+    const res = await fetch('/api/send-daily-summary', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        date: todayStr,
+        morningScore: mRow ? mRow.score : null,
+        eveningScore: eRow ? eRow.score : null,
+        pendingIssues: pending
+      })
+    })
+
+    if (res.ok) {
+      alert('📲 ส่งสรุปประจำวันเข้า LINE เรียบร้อยแล้ว!')
+    } else {
+      alert('❌ เกิดข้อผิดพลาดในการส่ง LINE')
+    }
+  } catch (error) {
+    alert('❌ ไม่สามารถส่ง LINE ได้')
+  } finally {
+    setSendingLine(false)
+  }
+}
+
+// ในส่วน UI หน้า Dashboard ใส่ปุ่มนี้ไว้ส่วนบน:
+
+  {sendingLine ? '⏳ กำลังส่งข้อมูล...' : '📲 ส่งสรุปประจำวันเข้า LINE'}
 
   useEffect(() => {
     supabase.from('staff').select('name').order('name').then(({ data }) => {
