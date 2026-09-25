@@ -62,15 +62,22 @@ export default function FormPage() {
       return
     }
 
-    let totalItems = 0
+    let evaluatedItems = 0 // จำนวนรายการที่มีการตรวจจริง
     let okItems = 0
+    let totalItems = 0
     const sectionsPayload: Record<string, any> = {}
 
     SECTIONS.forEach((s) => {
       const state = (sectionState as any)[s.key]
       const items = state.items.map((it: ItemState, idx: number) => {
         totalItems++
-        if (it.status === 'เรียบร้อย') okItems++
+        
+        // นับเฉพาะรายการที่มีการกดเลือกสถานะจริง (เรียบร้อย หรือ ไม่เรียบร้อย)
+        if (it.status) {
+          evaluatedItems++
+          if (it.status === 'เรียบร้อย') okItems++
+        }
+
         return {
           label: s.items[idx],
           status: it.status,
@@ -83,21 +90,8 @@ export default function FormPage() {
       sectionsPayload[s.key] = { doctor: state.doctor || null, caretaker: state.caretaker || null, items }
     })
 
-    let evaluatedItems = 0
-    let okItems = 0
-    Object.values(section).forEach((sec) => {
-      if (sec.doctor || sec.items?.some((i: any) => i.status)) {
-        sec.items.forEach((it: any) => {
-          if (it.status) {
-            evaluatedItems++
-            if (it.status === 'เรียบร้อย') okItems++
-          }
-        })
-      }
-    })
-    const score = evaluatedItems > 0  ? Math.round((okItems / evaluatedItems) * 100) : 100
-
-    //const score = totalItems ? Math.round((okItems / totalItems) * 100) : 0
+    // คำนวณ % จากเฉพาะรายการที่มีการกดตรวจจริง (หากไม่ได้ตรวจเลยสักข้อจะให้เป็น 100%)
+    const score = evaluatedItems > 0 ? Math.round((okItems / evaluatedItems) * 100) : 100
 
     setSaving(true)
     const { error } = await supabase.from('submissions').insert({
