@@ -155,7 +155,7 @@ export default function DashboardPage() {
               </button>
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-3 mb-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
             <div>
               <label className="block text-xs text-gray-500 mb-1">ตั้งแต่วันที่</label>
               <input type="date" value={rangeStart} onChange={(e) => { setRangeStart(e.target.value); setPreset('custom') }} className="w-full border border-[#e7dedc] rounded-lg px-3 py-2 text-sm" />
