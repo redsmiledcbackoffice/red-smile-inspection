@@ -48,13 +48,22 @@ export default function CalendarPage() {
   const todayKey = new Date().toISOString().slice(0, 10)
   const cells: (number | null)[] = [...Array(firstDow).fill(null), ...Array.from({ length: daysInMonth }, (_, i) => i + 1)]
 
-  const dayData = selectedDate ? byDate[selectedDate] || {} : {}
+  const activeDate = selectedDate || todayKey
+  const dayData = byDate[activeDate] || {}
+
   const dayIssues: { period: string; sectionKey: string; item: any }[] = []
   ;(['เช้า', 'เย็น'] as const).forEach((p) => {
     const sub = dayData[p]
-    if (!sub) return
-    Object.entries(sub.sections || {}).forEach(([key, secData]) => {
-      ;(secData.items || []).forEach((it: any) => { if (it.status === 'ไม่เรียบร้อย') dayIssues.push({ period: p, sectionKey: key, item: it }) })
+    if (!sub || !sub.sections) return
+    Object.entries(sub.sections).forEach(([key, secData]: [string, any]) => {
+      const items = secData?.items || secData || []
+      if (Array.isArray(items)) {
+        items.forEach((it: any) => { 
+          if (it && (it.status === 'ไม่เรียบร้อย' || it.ok === false)) {
+            dayIssues.push({ period: p, sectionKey: key, item: it }) 
+          }
+        })
+      }
     })
   })
 
@@ -109,7 +118,7 @@ export default function CalendarPage() {
 
         {selectedDate && (
           <div className="bg-white border border-[#e7dedc] rounded-2xl p-4">
-            <h2 className="font-semibold text-sm mb-2">รายละเอียดวันที่ {selectedDate}</h2>
+            <h2 className="font-bold text-sm !text-gray-900 mb-2">รายละเอียดวันที่ {activeDate}</h2>
             <div className="flex gap-4 text-xs mb-3">
               {(['เช้า', 'เย็น'] as const).map((p) => {
                 const sub = dayData[p]
@@ -119,12 +128,12 @@ export default function CalendarPage() {
             {dayIssues.length === 0 ? (
               <p className="text-center text-sm text-gray-500 py-4">ไม่มีรายการไม่เรียบร้อยในวันนี้ 🎉</p>
             ) : (
-              <table className="w-full text-xs">
-                <thead><tr className="text-gray-500 text-left"><th className="py-1">ช่วง</th><th>โซน</th><th>รายการ</th><th>ผู้แก้ไข</th><th>สถานะ</th></tr></thead>
+              <table className="w-full text-xs !text-gray-900">
+                <thead><tr className="!text-gray-900 font-bold text-left border-b border-[#e7dedc]"><th className="py-1">ช่วง</th><th>โซน</th><th>รายการ</th><th>ผู้แก้ไข</th><th>สถานะ</th></tr></thead>
                 <tbody>
                   {dayIssues.map((i, idx) => (
                     <tr key={idx} className="border-t border-[#e7dedc]">
-                      <td className="py-1.5">{i.period}</td>
+                      <td className="py-1.5 font-medium">{i.period}</td>
                       <td>{sectionTitle(i.sectionKey)}</td>
                       <td>{i.item.label.length > 30 ? i.item.label.slice(0, 30) + '…' : i.item.label}</td>
                       <td>{i.item.fixer || '-'}</td>
