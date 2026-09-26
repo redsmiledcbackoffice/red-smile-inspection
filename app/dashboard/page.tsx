@@ -205,13 +205,14 @@ export default function DashboardPage() {
           <div className="bg-white border border-[#e7dedc] rounded-2xl p-4 mb-4">
             <h2 className="text-[#a5293c] font-semibold text-sm mb-1">รายการที่ "{openFixer}" เคยต้องแก้ไข</h2>
             <table className="w-full text-xs mt-2">
-              <thead><tr className="text-gray-500 text-left"><th className="py-1">รายการ</th><th>ครั้ง</th><th>ล่าสุด</th></tr></thead>
+              <thead><tr className="text-gray-500 text-left"><th className="py-1">รายการ</th>
+              <th className="px-1 whitespace-nowrap">ครั้ง</th><th className="px-1 whitespace-nowrap">ล่าสุด</th></tr></thead>
               <tbody>
                 {fixerDetail.map(([label, info]) => (
                   <tr key={label} className="border-t border-[#e7dedc]">
                     <td className="py-2 px-1 !text-gray-900 font-medium whitespace-normal leading-tight">{label}</td>
-                    <td className={info.count >= 3 ? 'text-red-600 font-bold' : ''}>{info.count}</td>
-                    <td>{info.lastDate}</td>
+                    <td className={info.count >= 3 ? 'text-red-600 font-bold' : 'text-gray-900 dark:text-gray-100'}>{info.count}</td>
+                    <td className="text-gray-900 dark:text-gray-100">{info.lastDate}</td>
                   </tr>
                 ))}
               </tbody>
@@ -231,7 +232,7 @@ export default function DashboardPage() {
                 <th className="py-2 px-1 whitespace-nowrap">วันที่</th>
                 <th className="px-1 whitespace-nowrap">ช่วง</th>
                 <th className="px-1 whitespace-nowrap">โซน</th>
-                <th className="px-1 min-w-[150px]">รายการ</th>
+                <th className="px-1 min-w-[150px] whitespace-normal leading-tight">รายการ</th>
                 <th className="px-1 whitespace-nowrap">ผู้แก้ไข</th>
                 <th className="px-1 whitespace-nowrap">สถานะ</th>
               </tr></thead>
