@@ -165,7 +165,7 @@ export default function DashboardPage() {
               <input type="date" value={rangeEnd} onChange={(e) => { setRangeEnd(e.target.value); setPreset('custom') }} className="w-full max-w-full box-border bg-white text-gray-900 !text-gray-900 !bg-white border border-[#e7dedc] rounded-lg px-3 py-2 text-sm appearance-none" />
             </div>
           </div>
-          <button onClick={exportExcel} className="w-full bg-white text-gray-900 !text-gray-900 !bg-white font-medium rounded-lg border border-[#e7dedc] py-2 text-sm hover:bg-gray-50 box-border">📥 ดาวน์โหลด Excel รายการไม่เรียบร้อย</button>
+          <button onClick={exportExcel} className="w-full mb-3 bg-white text-gray-900 !text-gray-900 !bg-white font-medium rounded-lg border border-[#e7dedc] py-2 text-sm hover:bg-gray-50 box-border">📥 ดาวน์โหลด Excel รายการไม่เรียบร้อย</button>
           <SendLineButton rows={rows} filteredIssues={filteredIssues} />
           {msg && <p className="text-xs text-center mt-2 text-red-600">{msg}</p>}
         </div>
@@ -204,19 +204,20 @@ export default function DashboardPage() {
         {openFixer && (
           <div className="bg-white border border-[#e7dedc] rounded-2xl p-4 mb-4">
             <h2 className="text-[#a5293c] font-semibold text-sm mb-1">รายการที่ "{openFixer}" เคยต้องแก้ไข</h2>
-            <table className="w-full text-xs mt-2">
+            <div className= "overflow-x-auto w-full">
+              <table className="w-full text-xs mt-2">
               <thead><tr className="text-gray-500 text-left"><th className="py-1">รายการ</th>
-              <th className="text-gray-500 text-md whitespace-nowrap">ครั้ง</th><th className="text-gray-500 text-md whitespace-nowrap">ล่าสุด</th></tr></thead>
+              <th className="text-gray-500 text-md whitespace-nowrap">วันที่</th></tr></thead>
               <tbody>
                 {fixerDetail.map(([note, info]) => (
                   <tr key={note} className="border-t border-[#e7dedc]">
                     <td className="py-2 px-1 !text-gray-900 font-medium whitespace-normal leading-tight">{note}</td>
-                    <td className={info.count >= 3 ? 'text-red-600 font-bold' : 'text-gray-900'}>{info.count}</td>
                     <td className="text-gray-900">{info.lastDate}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
+              </div>
           </div>
         )}
 
