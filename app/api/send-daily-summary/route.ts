@@ -16,10 +16,10 @@ export async function POST(req: Request) {
       issueContents = pendingIssues.map((item: any) => {
         // ใช้สิ่งที่ต้องแก้ไข (note) ถ้าไม่มีให้ใช้ชื่อรายการ (label) แทน
         const noteText = item.note && item.note.trim() !== '' ? item.note : item.label
-        
+
         return {
           type: 'text',
-          text: `• \({noteText}\n   └ 👤 รอแก้ไขโดย:\){item.fixer || 'ยังไม่ระบุ'}`,
+          text: `• ${noteText}\n   └ 👤 รอแก้ไขโดย: ${item.fixer || 'ยังไม่ระบุ'}`,
           size: 'xs',
           color: '#dc2626',
           wrap: true,
@@ -63,13 +63,13 @@ export async function POST(req: Request) {
                   layout: 'horizontal',
                   contents: [
                     { type: 'text', text: '☀️ รอบเช้า:', size: 'xs', color: '#4b5563' },
-                    { 
-                      type: 'text', 
-                      text: morningScore !== null && morningScore !== undefined ? `${morningScore}%` : 'ยังไม่ตรวจ', 
-                      size: 'xs', 
-                      weight: 'bold', 
-                      align: 'end', 
-                      color: getScoreColor(morningScore) 
+                    {
+                      type: 'text',
+                      text: morningScore !== null && morningScore !== undefined ? `${morningScore}%` : 'ยังไม่ตรวจ',
+                      size: 'xs',
+                      weight: 'bold',
+                      align: 'end',
+                      color: getScoreColor(morningScore)
                     }
                   ]
                 },
@@ -79,13 +79,13 @@ export async function POST(req: Request) {
                   margin: 'xs',
                   contents: [
                     { type: 'text', text: '🌙 รอบเย็น:', size: 'xs', color: '#4b5563' },
-                    { 
-                      type: 'text', 
-                      text: eveningScore !== null && eveningScore !== undefined ? `${eveningScore}%` : 'ยังไม่ตรวจ', 
-                      size: 'xs', 
-                      weight: 'bold', 
-                      align: 'end', 
-                      color: getScoreColor(eveningScore) 
+                    {
+                      type: 'text',
+                      text: eveningScore !== null && eveningScore !== undefined ? `${eveningScore}%` : 'ยังไม่ตรวจ',
+                      size: 'xs',
+                      weight: 'bold',
+                      align: 'end',
+                      color: getScoreColor(eveningScore)
                     }
                   ]
                 },
