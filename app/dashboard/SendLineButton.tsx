@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 type PendingIssue = {
   label: string
+  note?: string
   fixer?: string
 }
 
@@ -17,6 +18,7 @@ type Submission = {
 type IssueItem = {
   item?: {
     label?: string
+    note?: string
     fixer?: string
     resolved?: boolean
   }
@@ -58,6 +60,7 @@ export default function SendLineButton({ rows, filteredIssues }: SendLineButtonP
       .filter((i) => !i.item?.resolved)
       .map((i) => ({
         label: i.item?.label || '',
+        note: i.item?.note || '',
         fixer: i.item?.fixer || '',
       }))
 

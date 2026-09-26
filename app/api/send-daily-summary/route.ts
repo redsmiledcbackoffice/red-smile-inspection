@@ -18,13 +18,26 @@ export async function POST(req: Request) {
         const noteText = item.note && item.note.trim() !== '' ? item.note : item.label
 
         return {
-          type: 'text',
-          text: `• ${noteText}\n   └ 👤 รอแก้ไขโดย: ${item.fixer || 'ยังไม่ระบุ'}`,
-          size: 'xs',
-          color: '#dc2626',
-          wrap: true,
-          margin: 'sm'
-        }
+        type: 'box',
+        layout: 'vertical',
+        margin: 'sm',
+        contents: [
+          {
+            type: 'text',
+            text: `• ${noteText}`,
+            size: 'xs',
+            color: '#dc2626',
+            wrap: true
+          },
+          {
+            type: 'text',
+            text: `   └ 👤 รอแก้ไขโดย: ${item.fixer || 'ยังไม่ระบุ'}`,
+            size: 'xs',
+            color: '#2563eb',
+            wrap: true
+          }
+        ]
+      }
       })
     } else {
       issueContents = [{
