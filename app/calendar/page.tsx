@@ -103,7 +103,7 @@ export default function CalendarPage() {
                 <button
                   key={i}
                   onClick={() => setSelectedDate(dateKey)}
-                  className={`border rounded-lg p-1 text-left flex flex-col justify-between min-h-[55px] transition-all duration-150 cursor-pointer hover:bg-[#e7dedc] border-[#e7dedc] ${dateKey === todayKey ? 'bg-[#fffee6] border-[#e7dedc]' : 'border-[#e7dedc]'}`}
+                  className={`border rounded-lg p-1 text-left flex flex-col justify-between min-h-[55px] transition-all duration-150 cursor-pointer hover:bg-[#e7dedc] border-[#e7dedc] ${dateKey === todayKey ? 'bg-[#e7dedc] border-[#e7dedc]' : 'border-[#e7dedc]'} ${dateKey === activeDate ? 'bg-[#fac3b6] border-[#e7dedc]' : 'border-[#e7dedc]'}`}
                 >
                   <div className="text-[11px] text-gray-500">{d}</div>
                   <div className="flex flex-col gap-0.5 mt-1">
@@ -141,7 +141,7 @@ export default function CalendarPage() {
                     <tr key={idx} className="border-t border-[#e7dedc]">
                       <td className="py-1.5 font-medium">{i.period}</td>
                       <td>{sectionTitle(i.sectionKey)}</td>
-                      <td>{i.item.label.length > 30 ? i.item.label.slice(0, 30) + '…' : i.item.label}</td>
+                      <td className="px-1 !text-gray-900 font-medium whitespace-normal leading-tight break-all">{i.item.note || i.item.label || 'ไม่ระบุ'}</td>
                       <td>{i.item.fixer || '-'}</td>
                       <td className={i.item.resolved ? 'text-green-700' : 'text-red-600'}>{i.item.resolved ? 'แก้ไขแล้ว' : 'รอแก้ไข'}</td>
                     </tr>
