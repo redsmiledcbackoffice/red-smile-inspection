@@ -206,7 +206,7 @@ export default function DashboardPage() {
             <h2 className="text-[#a5293c] font-semibold text-sm mb-1">รายการที่ "{openFixer}" เคยต้องแก้ไข</h2>
             <table className="w-full text-xs mt-2">
               <thead><tr className="text-gray-500 text-left"><th className="py-1">รายการ</th>
-              <th className="px-1 whitespace-nowrap">ครั้ง</th><th className="px-1 whitespace-nowrap">ล่าสุด</th></tr></thead>
+              <th className="text-gray-500 text-md whitespace-nowrap">ครั้ง</th><th className="text-gray-500 text-md whitespace-nowrap">ล่าสุด</th></tr></thead>
               <tbody>
                 {fixerDetail.map(([label, info]) => (
                   <tr key={label} className="border-t border-[#e7dedc]">
@@ -227,12 +227,12 @@ export default function DashboardPage() {
             {SECTIONS.map((s) => <option key={s.key} value={s.key}>{s.title}</option>)}
           </select>
           <div className="overflow-x-auto w-full">
-            <table className="w-full text-xs min-w-[500px]">
+            <table className="w-full text-xxs min-w-[500px]">
               <thead><tr className="text-gray-900 text-left border-b border-[#e7dedc]">
                 <th className="py-2 px-1 whitespace-nowrap">วันที่</th>
                 <th className="px-1 whitespace-nowrap">ช่วง</th>
                 <th className="px-1 whitespace-nowrap">โซน</th>
-                <th className="px-1 min-w-[150px] whitespace-normal leading-tight">รายการ</th>
+                <th className="px-1 min-w-[150px] whitespace-normal leading-tight break-words">รายการ</th>
                 <th className="px-1 whitespace-nowrap">ผู้แก้ไข</th>
                 <th className="px-1 whitespace-nowrap">สถานะ</th>
               </tr></thead>
