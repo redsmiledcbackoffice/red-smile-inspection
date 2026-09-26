@@ -232,7 +232,7 @@ export default function DashboardPage() {
                 <th className="py-2 px-1 whitespace-nowrap">วันที่</th>
                 <th className="px-1 whitespace-nowrap">ช่วง</th>
                 <th className="px-1 whitespace-nowrap">โซน</th>
-                <th className="px-1 min-w-[150px] whitespace-normal leading-tight break-words">รายการ</th>
+                <th className="px-1 whitespace-normal leading-tight break-all">รายการ</th>
                 <th className="px-1 whitespace-nowrap">ผู้แก้ไข</th>
                 <th className="px-1 whitespace-nowrap">สถานะ</th>
               </tr></thead>
