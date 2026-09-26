@@ -211,8 +211,8 @@ export default function DashboardPage() {
                 {fixerDetail.map(([label, info]) => (
                   <tr key={label} className="border-t border-[#e7dedc]">
                     <td className="py-2 px-1 !text-gray-900 font-medium whitespace-normal leading-tight">{label}</td>
-                    <td className={info.count >= 3 ? 'text-red-600 font-bold' : 'text-gray-900 dark:text-gray-100'}>{info.count}</td>
-                    <td className="text-gray-900 dark:text-gray-100">{info.lastDate}</td>
+                    <td className={info.count >= 3 ? 'text-red-600 font-bold' : 'text-gray-900'}>{info.count}</td>
+                    <td className="text-gray-900">{info.lastDate}</td>
                   </tr>
                 ))}
               </tbody>
@@ -227,7 +227,7 @@ export default function DashboardPage() {
             {SECTIONS.map((s) => <option key={s.key} value={s.key}>{s.title}</option>)}
           </select>
           <div className="overflow-x-auto w-full">
-            <table className="w-full text-xxs min-w-[500px]">
+            <table className="w-full text-[10px] min-w-[500px]">
               <thead><tr className="text-gray-900 text-left border-b border-[#e7dedc]">
                 <th className="py-2 px-1 whitespace-nowrap">วันที่</th>
                 <th className="px-1 whitespace-nowrap">ช่วง</th>
