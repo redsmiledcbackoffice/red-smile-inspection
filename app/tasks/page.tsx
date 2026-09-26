@@ -99,7 +99,7 @@ export default function TasksPage() {
             <p className="text-center text-sm text-gray-500 py-6">ไม่มีงานค้าง ทุกอย่างเรียบร้อย 🎉</p>
           ) : (
             <div className="overflow-x-auto w-full">
-              <table className="w-full text-xs min-w-[500px]">
+              <table className="w-full text-[10px] min-w-[500px]">
                 <thead><tr className="text-gray-700 font-semibold text-left border-b border-[#e7dedc]">
                   <th className="py-2 px-1 whitespace-nowrap">วันที่</th>
                   <th className="px-1 whitespace-nowrap">ช่วง</th>
@@ -117,10 +117,10 @@ export default function TasksPage() {
                         <td className="py-2 px-1 !text-gray-900 font-medium whitespace-nowrap">{i.date}</td>
                         <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{i.period}</td>
                         <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{sectionTitle(i.sectionKey)}</td>
-                        <td className="px-1 !text-gray-900 font-medium leading-tight">{i.item.label.length > 30 ? i.item.label.slice(0, 30) + '…' : i.item.label}</td>
+                        <td className="px-1 !text-gray-900 font-medium whitespace-normal leading-tight break-all">{i.item.note || i.item.label || 'ไม่ระบุ'}</td>
                         <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{i.item.fixer || '-'}</td>
-                        <td className={elapsed > 24 * 3600 * 1000 ? 'text-red-600 font-bold' : ''}>{formatDuration(elapsed)}</td>
-                        <td><button onClick={() => markResolved(i.subId, i.sectionKey, i.idx)} className="bg-[#17c964] hover:bg-[12a150] !text-white font-bold text-xs px-1.5 py-1.5 rounded-lg shadow-sm whitespace-nowrap">แก้ไขแล้ว</button></td>
+                        <td className={elapsed > 24 * 3600 * 1000 ? 'text-red-600 font-bold text-right' : 'text-gray-900 font-medium text-right'}>{formatDuration(elapsed)}</td>
+                        <td><button onClick={() => markResolved(i.subId, i.sectionKey, i.idx)} className="rounded border border-amber-300 bg-amber-50 px-2 py-1 text-xs font-medium text-amber-800 hover:bg-amber-100 transition-colors shadow-sm">แก้ไขแล้ว</button></td>
                       </tr>
                     )
                   })}
@@ -135,16 +135,23 @@ export default function TasksPage() {
           {resolved.length === 0 ? (
             <p className="text-center text-sm text-gray-500 py-4">ยังไม่มีประวัติ</p>
           ) : (
-            <table className="w-full text-xs">
-              <thead><tr className="text-gray-700 font-semibold text-left"><th className="py-1">วันที่</th><th>โซน</th><th>รายการ</th><th>ผู้แก้ไข</th><th>แก้ไขเมื่อ</th></tr></thead>
+            <table className="w-full text-[10px]">
+              <thead><tr className="text-gray-700 font-semibold text-left"><th className="py-2 px-1 whitespace-nowrap">วันที่</th>
+              <th className="px-1 whitespace-nowrap">ช่วง</th>
+              <th className="py-2 px-1 whitespace-nowrap">โซน</th>
+              <th className="px-1 min-w-[150px]">รายการ</th>
+              <th className="py-2 px-1 whitespace-nowrap">ผู้แก้ไข</th>
+              <th className="py-2 px-1 whitespace-nowrap">แก้ไขเมื่อ</th>
+              </tr></thead>
               <tbody>
                 {resolved.map((i, idx) => (
                   <tr key={idx} className="border-t border-[#e7dedc]">
-                    <td className="py-1.5">{i.date}</td>
-                    <td>{sectionTitle(i.sectionKey)}</td>
-                    <td>{i.item.label.length > 30 ? i.item.label.slice(0, 30) + '…' : i.item.label}</td>
-                    <td>{i.item.fixer || '-'}</td>
-                    <td>{i.item.resolvedAt ? new Date(i.item.resolvedAt).toLocaleString('th-TH') : '-'}</td>
+                    <td className="py-2 px-1 !text-gray-900 font-medium whitespace-nowrap">{i.date}</td>
+                    <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{i.period}</td>
+                    <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{sectionTitle(i.sectionKey)}</td>
+                    <td className="px-1 !text-gray-900 font-medium whitespace-normal leading-tight break-all">{i.item.note}</td>
+                    <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{i.item.fixer || '-'}</td>
+                    <td className="py-2 px-1 !text-gray-900 font-medium whitespace-nowrap">{i.item.resolvedAt ? new Date(i.item.resolvedAt).toLocaleString('th-TH') : '-'}</td>
                   </tr>
                 ))}
               </tbody>

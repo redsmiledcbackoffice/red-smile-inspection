@@ -85,12 +85,12 @@ export default function CalendarPage() {
 
           <div className="flex flex-wrap gap-3 text-[11px] text-gray-500 mb-2">
             <span><i className="inline-block w-2 h-2 rounded-full bg-green-600 mr-1" />เรียบร้อย 100%</span>
-            <span><i className="inline-block w-2 h-2 rounded-full bg-red-600 mr-1" />มีไม่เรียบร้อย</span>
+            <span><i className="inline-block w-2 h-2 rounded-full bg-red-600 mr-1" />มีงานที่ไม่เรียบร้อย</span>
             <span><i className="inline-block w-2 h-2 rounded-full bg-gray-300 mr-1" />ยังไม่ตรวจ</span>
           </div>
 
           <div className="grid grid-cols-7 gap-1 mb-1">
-            {WEEKDAYS_TH.map((w) => <div key={w} className="text-center text-[11px] text-gray-500 font-semibold">{w}</div>)}
+            {WEEKDAYS_TH.map((w) => <div key={w} className="text-center text-[10px] text-gray-500 font-semibold">{w}</div>)}
           </div>
           <div className="grid grid-cols-7 gap-1">
             {cells.map((d, i) => {
@@ -103,12 +103,12 @@ export default function CalendarPage() {
                 <button
                   key={i}
                   onClick={() => setSelectedDate(dateKey)}
-                  className={`border rounded-lg p-1 text-left ${dateKey === todayKey ? 'border-[#a5293c] border-2' : 'border-[#e7dedc]'}`}
+                  className={`border rounded-lg p-1 text-left flex flex-col justify-between min-h-[55px] transition-all duration-150 cursor-pointer hover:bg-[#e7dedc] border-[#e7dedc] ${dateKey === todayKey ? 'bg-[#fffee6] border-[#e7dedc]' : 'border-[#e7dedc]'}`}
                 >
                   <div className="text-[11px] text-gray-500">{d}</div>
-                  <div className="flex gap-0.5 mt-1">
-                    <div className={`flex-1 text-center rounded text-[9px] font-bold border py-0.5 ${pillClass(am)}`}>ช{am ? ' ' + am.score + '%' : ''}</div>
-                    <div className={`flex-1 text-center rounded text-[9px] font-bold border py-0.5 ${pillClass(pm)}`}>ย{pm ? ' ' + pm.score + '%' : ''}</div>
+                  <div className="flex flex-col gap-0.5 mt-1">
+                    <div className={`w-full text-center rounded text-[9px] font-bold border py-0.25 leading-normal ${pillClass(am)}`}>ช{am ? ' ' + am.score + '%' : ''}</div>
+                    <div className={`w-full text-center rounded text-[9px] font-bold border py-0.25 leading-normal ${pillClass(pm)}`}>ย{pm ? ' ' + pm.score + '%' : ''}</div>
                   </div>
                 </button>
               )
@@ -128,8 +128,14 @@ export default function CalendarPage() {
             {dayIssues.length === 0 ? (
               <p className="text-center text-sm text-gray-500 py-4">ไม่มีรายการไม่เรียบร้อยในวันนี้ 🎉</p>
             ) : (
-              <table className="w-full text-xs !text-gray-900">
-                <thead><tr className="!text-gray-900 font-bold text-left border-b border-[#e7dedc]"><th className="py-1">ช่วง</th><th>โซน</th><th>รายการ</th><th>ผู้แก้ไข</th><th>สถานะ</th></tr></thead>
+              <div className="overflow-x-auto w-full">
+              <table className="w-full text-[10px] !text-gray-900">
+                <thead><tr className="!text-gray-900 font-bold text-left border-b border-[#e7dedc]"><th className="px-1 !text-gray-900 text-medium whitespace-nowrap">ช่วง</th>
+                <th className="px-1 !text-gray-900 whitespace-nowrap">โซน</th>
+                <th className="px-1 !text-gray-900 whitespace-normal leading-tight break-all">รายการ</th>
+                <th className="px-1 !text-gray-900 whitespace-nowrap">ผู้แก้ไข</th>
+                <th className="px-1 !text-gray-900 whitespace-nowrap">สถานะ</th>
+                </tr></thead>
                 <tbody>
                   {dayIssues.map((i, idx) => (
                     <tr key={idx} className="border-t border-[#e7dedc]">
@@ -142,6 +148,7 @@ export default function CalendarPage() {
                   ))}
                 </tbody>
               </table>
+              </div>
             )}
           </div>
         )}
