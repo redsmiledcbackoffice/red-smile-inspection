@@ -206,7 +206,7 @@ export default function DashboardPage() {
             <h2 className="text-[#a5293c] font-semibold text-sm mb-1">รายการที่ "{openFixer}" เคยต้องแก้ไข</h2>
             <div className= "overflow-x-auto w-full">
               <table className="w-full text-[10px] mt-2">
-              <thead><tr className="text-gray-500 text-left"><th className="py-1">รายการ</th>
+              <thead><tr className="text-gray-500 text-left"><th className="py-1">สิ่งที่ต้องแก้ไข</th>
               <th className="text-gray-500 text-md whitespace-nowrap">วันที่</th></tr></thead>
               <tbody>
                 {fixerDetail.map(([note, info]) => (
