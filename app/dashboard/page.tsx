@@ -208,9 +208,9 @@ export default function DashboardPage() {
               <thead><tr className="text-gray-500 text-left"><th className="py-1">รายการ</th>
               <th className="text-gray-500 text-md whitespace-nowrap">ครั้ง</th><th className="text-gray-500 text-md whitespace-nowrap">ล่าสุด</th></tr></thead>
               <tbody>
-                {fixerDetail.map(([label, info]) => (
-                  <tr key={label} className="border-t border-[#e7dedc]">
-                    <td className="py-2 px-1 !text-gray-900 font-medium whitespace-normal leading-tight">{label}</td>
+                {fixerDetail.map(([note, info]) => (
+                  <tr key={note} className="border-t border-[#e7dedc]">
+                    <td className="py-2 px-1 !text-gray-900 font-medium whitespace-normal leading-tight">{note}</td>
                     <td className={info.count >= 3 ? 'text-red-600 font-bold' : 'text-gray-900'}>{info.count}</td>
                     <td className="text-gray-900">{info.lastDate}</td>
                   </tr>
@@ -232,7 +232,7 @@ export default function DashboardPage() {
                 <th className="py-2 px-1 whitespace-nowrap">วันที่</th>
                 <th className="px-1 whitespace-nowrap">ช่วง</th>
                 <th className="px-1 whitespace-nowrap">โซน</th>
-                <th className="px-1 whitespace-normal leading-tight break-all">รายการ</th>
+                <th className="px-1 whitespace-normal leading-tight">สิ่งที่ต้องแก้ไข</th>
                 <th className="px-1 whitespace-nowrap">ผู้แก้ไข</th>
                 <th className="px-1 whitespace-nowrap">สถานะ</th>
               </tr></thead>
@@ -242,7 +242,7 @@ export default function DashboardPage() {
                     <td className="py-2 px-1 !text-gray-900 font-medium whitespace-nowrap">{i.date}</td>
                     <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{i.period}</td>
                     <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{sectionTitle(i.sectionKey)}</td>
-                    <td className="px-1 !text-gray-900 font-medium leading-tight">{i.item.label.length > 30 ? i.item.label.slice(0, 30) + '…' : i.item.label}</td>
+                    <td className="px-1 !text-gray-900 font-medium whitespace-normal leading-tight">{i.item.note}</td>
                     <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{i.item.fixer || '-'}</td>
                     <td className={`px-1 font-bold whitespace-nowrap ${i.item.resolved ? 'text-green-700' : 'text-red-600 !text-red-600'}`}>{i.item.resolved ? 'แก้ไขแล้ว' : 'รอแก้ไข'}</td>
                   </tr>
