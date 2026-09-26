@@ -202,14 +202,14 @@ export default function FormPage() {
               const item = (sectionState as any)[s.key].items[idx] as ItemState
               return (
                 <div key={idx} className="border border-[#e7dedc] rounded-xl p-3 mb-2 bg-[#f6f3f2]">
-                  <p className="text-sm mb-2">
+                  <p className="text-xs mb-2">
                     {idx + 1}. {label}
                   </p>
                   <div className="flex gap-2 mb-2">
                     <button
                       type="button"
                       onClick={() => updateItem(s.key, idx, { status: 'เรียบร้อย' })}
-                      className={`flex-1 rounded-lg border py-2 text-sm font-semibold ${
+                      className={`flex-1 rounded-lg border py-2 text-xs font-semibold ${
                         item.status === 'เรียบร้อย'
                           ? 'bg-green-50 border-green-600 text-green-700'
                           : 'bg-white border-[#e7dedc]'
@@ -220,7 +220,7 @@ export default function FormPage() {
                     <button
                       type="button"
                       onClick={() => updateItem(s.key, idx, { status: 'ไม่เรียบร้อย' })}
-                      className={`flex-1 rounded-lg border py-2 text-sm font-semibold ${
+                      className={`flex-1 rounded-lg border py-2 text-xs font-semibold ${
                         item.status === 'ไม่เรียบร้อย'
                           ? 'bg-red-50 border-red-600 text-red-700'
                           : 'bg-white border-[#e7dedc]'
@@ -235,12 +235,12 @@ export default function FormPage() {
                         placeholder="หมายเหตุ / สิ่งที่ขาด / ปัญหาที่พบ"
                         value={item.note}
                         onChange={(e) => updateItem(s.key, idx, { note: e.target.value })}
-                        className="border border-[#e7dedc] rounded-lg px-3 py-2 text-sm"
+                        className="border border-[#e7dedc] rounded-lg px-3 py-2 text-xs"
                       />
                       <select
                         value={item.fixer}
                         onChange={(e) => updateItem(s.key, idx, { fixer: e.target.value })}
-                        className="border border-[#e7dedc] rounded-lg px-3 py-2 text-sm"
+                        className="border border-[#e7dedc] rounded-lg px-3 py-2 text-xs"
                       >
                         <option value="">เลือกผู้แก้ไข</option>
                         {staffList.map((name) => (

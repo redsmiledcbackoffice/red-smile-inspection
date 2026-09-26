@@ -98,7 +98,13 @@ export default function TasksPage() {
           {pending.length === 0 ? (
             <p className="text-center text-sm text-gray-500 py-6">ไม่มีงานค้าง ทุกอย่างเรียบร้อย 🎉</p>
           ) : (
-            <div className="overflow-x-auto w-full">
+            <div className="overflow-x-auto w-full 
+                    [&::-webkit-scrollbar]:h-2 
+                    [&::-webkit-scrollbar-track]:bg-gray-100 
+                    [&::-webkit-scrollbar-track]:rounded-full
+                    [&::-webkit-scrollbar-thumb]:bg-gray-300 
+                    [&::-webkit-scrollbar-thumb]:rounded-full
+                    hover:[&::-webkit-scrollbar-thumb]:bg-gray-400">
               <table className="w-full text-[10px] min-w-[500px]">
                 <thead><tr className="text-gray-700 font-semibold text-left border-b border-[#e7dedc]">
                   <th className="py-2 px-1 whitespace-nowrap">วันที่</th>
@@ -119,7 +125,7 @@ export default function TasksPage() {
                         <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{sectionTitle(i.sectionKey)}</td>
                         <td className="px-1 !text-gray-900 font-medium whitespace-normal leading-tight break-all">{i.item.note || i.item.label || 'ไม่ระบุ'}</td>
                         <td className="px-1 !text-gray-900 font-medium whitespace-nowrap">{i.item.fixer || '-'}</td>
-                        <td className={elapsed > 24 * 3600 * 1000 ? 'text-red-600 font-bold text-right' : 'text-gray-900 font-medium text-right'}>{formatDuration(elapsed)}</td>
+                        <td className={elapsed > 24 * 3600 * 1000 ? 'text-red-600 font-bold text-right' : 'text-gray-900 font-medium'}>{formatDuration(elapsed)}</td>
                         <td><button onClick={() => markResolved(i.subId, i.sectionKey, i.idx)} className="rounded border border-amber-300 bg-amber-50 px-1 py-0.5 text-[10px] font-medium text-amber-800 hover:bg-amber-100 transition-colors shadow-sm leading-none">แก้ไขแล้ว</button></td>
                       </tr>
                     )
@@ -135,7 +141,13 @@ export default function TasksPage() {
           {resolved.length === 0 ? (
             <p className="text-center text-sm text-gray-500 py-4">ยังไม่มีประวัติ</p>
           ) : (
-            <div className="overflow-x-auto w-full">
+            <div className="overflow-x-auto w-full 
+                    [&::-webkit-scrollbar]:h-2 
+                    [&::-webkit-scrollbar-track]:bg-gray-100 
+                    [&::-webkit-scrollbar-track]:rounded-full
+                    [&::-webkit-scrollbar-thumb]:bg-gray-300 
+                    [&::-webkit-scrollbar-thumb]:rounded-full
+                    hover:[&::-webkit-scrollbar-thumb]:bg-gray-400">
             <table className="w-full text-[10px]">
               <thead><tr className="text-gray-700 font-semibold text-left"><th className="py-2 px-1 whitespace-nowrap">วันที่</th>
               <th className="px-1 whitespace-nowrap">ช่วง</th>

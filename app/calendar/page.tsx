@@ -128,7 +128,13 @@ export default function CalendarPage() {
             {dayIssues.length === 0 ? (
               <p className="text-center text-sm text-gray-500 py-4">ไม่มีรายการไม่เรียบร้อยในวันนี้ 🎉</p>
             ) : (
-              <div className="overflow-x-auto w-full">
+              <div className="overflow-x-auto w-full
+                    [&::-webkit-scrollbar]:h-2 
+                    [&::-webkit-scrollbar-track]:bg-gray-100 
+                    [&::-webkit-scrollbar-track]:rounded-full
+                    [&::-webkit-scrollbar-thumb]:bg-gray-300 
+                    [&::-webkit-scrollbar-thumb]:rounded-full
+                    hover:[&::-webkit-scrollbar-thumb]:bg-gray-400">
               <table className="w-full text-[10px] !text-gray-900">
                 <thead><tr className="!text-gray-900 font-bold text-left border-b border-[#e7dedc]"><th className="px-1 !text-gray-900 text-medium whitespace-nowrap">ช่วง</th>
                 <th className="px-1 !text-gray-900 whitespace-nowrap">โซน</th>

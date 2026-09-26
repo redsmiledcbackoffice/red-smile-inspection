@@ -227,7 +227,13 @@ export default function DashboardPage() {
             <option value="">ทุกโซน</option>
             {SECTIONS.map((s) => <option key={s.key} value={s.key}>{s.title}</option>)}
           </select>
-          <div className="overflow-x-auto w-full">
+          <div className="overflow-x-auto w-full
+                    [&::-webkit-scrollbar]:h-2 
+                    [&::-webkit-scrollbar-track]:bg-gray-100 
+                    [&::-webkit-scrollbar-track]:rounded-full
+                    [&::-webkit-scrollbar-thumb]:bg-gray-300 
+                    [&::-webkit-scrollbar-thumb]:rounded-full
+                    hover:[&::-webkit-scrollbar-thumb]:bg-gray-400">
             <table className="w-full text-[10px] min-w-[500px]">
               <thead><tr className="text-gray-900 text-left border-b border-[#e7dedc]">
                 <th className="py-2 px-1 whitespace-nowrap">วันที่</th>
