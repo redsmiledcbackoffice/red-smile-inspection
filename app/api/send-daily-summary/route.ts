@@ -1,20 +1,31 @@
 import { NextResponse } from 'next/server'
 
+// ฟังก์ชันสำหรับกำหนดสีเปอร์เซ็นต์ (100% = เขียว, น้อยกว่า 100% = แดง)
+function getScoreColor(score: number | null | undefined): string {
+  if (score === null || score === undefined) return '#4b5563' // สีเทาสำหรับยังไม่ตรวจ
+  return score === 100 ? '#15803d' : '#dc2626'
+}
+
 export async function POST(req: Request) {
   try {
     const { date, morningScore, eveningScore, pendingIssues } = await req.json()
 
-    // จัดรูปแบบรายการค้างแก้ไข
+    // 1. จัดรูปแบบรายการค้างแก้ไข (ใช้ item.note แทน item.label)
     let issueContents: any[] = []
     if (pendingIssues && pendingIssues.length > 0) {
-      issueContents = pendingIssues.map((item: any) => ({
-        type: 'text',
-        text: `• \({item.label}\n  └ 👤 รอแก้ไขโดย:\){item.fixer || 'ยังไม่ระบุ'}`,
-        size: 'xs',
-        color: '#dc2626',
-        wrap: true,
-        margin: 'sm'
-      }))
+      issueContents = pendingIssues.map((item: any) => {
+        // ใช้สิ่งที่ต้องแก้ไข (note) ถ้าไม่มีให้ใช้ชื่อรายการ (label) แทน
+        const noteText = item.note && item.note.trim() !== '' ? item.note : item.label
+        
+        return {
+          type: 'text',
+          text: `• \({noteText}\n   └ 👤 รอแก้ไขโดย:\){item.fixer || 'ยังไม่ระบุ'}`,
+          size: 'xs',
+          color: '#dc2626',
+          wrap: true,
+          margin: 'sm'
+        }
+      })
     } else {
       issueContents = [{
         type: 'text',
@@ -25,6 +36,7 @@ export async function POST(req: Request) {
       }]
     }
 
+    // 2. สร้างโครงสร้าง Flex Message
     const flexPayload = {
       to: process.env.LINE_TARGET_ID,
       messages: [
@@ -51,7 +63,14 @@ export async function POST(req: Request) {
                   layout: 'horizontal',
                   contents: [
                     { type: 'text', text: '☀️ รอบเช้า:', size: 'xs', color: '#4b5563' },
-                    { type: 'text', text: morningScore ? `${morningScore}%` : 'ยังไม่ตรวจ', size: 'xs', weight: 'bold', align: 'end', color: morningScore >= 90 ? '#15803d' : '#dc2626' }
+                    { 
+                      type: 'text', 
+                      text: morningScore !== null && morningScore !== undefined ? `${morningScore}%` : 'ยังไม่ตรวจ', 
+                      size: 'xs', 
+                      weight: 'bold', 
+                      align: 'end', 
+                      color: getScoreColor(morningScore) 
+                    }
                   ]
                 },
                 {
@@ -60,11 +79,18 @@ export async function POST(req: Request) {
                   margin: 'xs',
                   contents: [
                     { type: 'text', text: '🌙 รอบเย็น:', size: 'xs', color: '#4b5563' },
-                    { type: 'text', text: eveningScore ? `${eveningScore}%` : 'ยังไม่ตรวจ', size: 'xs', weight: 'bold', align: 'end', color: eveningScore >= 90 ? '#15803d' : '#dc2626' }
+                    { 
+                      type: 'text', 
+                      text: eveningScore !== null && eveningScore !== undefined ? `${eveningScore}%` : 'ยังไม่ตรวจ', 
+                      size: 'xs', 
+                      weight: 'bold', 
+                      align: 'end', 
+                      color: getScoreColor(eveningScore) 
+                    }
                   ]
                 },
                 { type: 'separator', margin: 'md' },
-                { type: 'text', text: '⚠️ รายการค้างแก้ไข ณ เย็นนี้:', weight: 'bold', size: 'xs', margin: 'md', color: '#1f2937' },
+                { type: 'text', text: '⚠️ รายการค้างแก้ไข ณ วันนี้:', weight: 'bold', size: 'xs', margin: 'md', color: '#1f2937' },
                 ...issueContents
               ]
             },
@@ -90,6 +116,7 @@ export async function POST(req: Request) {
       ]
     }
 
+    // 3. ยิงข้อความเข้า LINE API
     const response = await fetch('https://api.line.me/v2/bot/message/push', {
       method: 'POST',
       headers: {
