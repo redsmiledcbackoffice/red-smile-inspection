@@ -189,12 +189,18 @@ export default function FormPage() {
             {s.caretaker && (
               <div className="mb-3">
                 <label className="block text-xs text-gray-500 mb-1">ผู้รับผิดชอบดูแลห้อง ({period})</label>
-                <input
-                  type="text"
+                <select
                   value={(sectionState as any)[s.key].caretaker}
                   onChange={(e) => updateSectionField(s.key, 'caretaker', e.target.value)}
-                  className="w-full border border-[#e7dedc] rounded-lg px-3 py-2 text-sm"
-                />
+                  className="w-full border border-[#e7dedc] bg-white text-gray-900 rounded-lg px-3 py-2 text-sm"
+                >
+                  <option value="">เลือกผู้รับผิดชอบ</option>
+                  {staffList.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
               </div>
             )}
 
