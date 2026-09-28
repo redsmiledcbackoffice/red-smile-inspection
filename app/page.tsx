@@ -192,7 +192,7 @@ export default function FormPage() {
                 <select
                   value={(sectionState as any)[s.key].caretaker}
                   onChange={(e) => updateSectionField(s.key, 'caretaker', e.target.value)}
-                  className="w-full border border-[#e7dedc] bg-white text-gray-900 rounded-lg px-3 py-2 text-sm"
+                  className="w-full border border-[#e7dedc] bg-white text-gray-900 rounded-lg px-3 py-2 text-[10px]"
                 >
                   <option value="">เลือกผู้รับผิดชอบ</option>
                   {staffList.map((name) => (
