@@ -263,7 +263,20 @@ export default function FormPage() {
           </div>
         ))}
 
-        {message && <p className="text-center text-sm mb-3">{message}</p>}
+        {message && (
+          <div
+            className={`p-4 mb-4 rounded-xl text-center text-sm font-semibold flex items-denter justify-center gap-2 transition-all ${
+              message.includes('เรียบร้อย')
+                ?'ng-emerald-100 border border-emerald-300 text-emerald-800 shadow-sm'
+                : 'bg-rose-100 border border-rose-300 text-rose-800 shadow-sm'
+            }`}
+            >
+              <span className="text-base">
+                {message.includes('เรียบร้อย') ? '✅' : '⚠️'}
+              </span>
+              <span>{message}</span>
+            </div>
+            )}
 
         <button
           type="submit"
