@@ -146,8 +146,8 @@ export async function POST(req: Request) {
         .join('\n')
     }
 
-    const mText = morningScore !== null && morningScore !== undefined ? `${morningScore}%` : 'ยังไม่ตรวจ'
-    const eText = eveningScore !== null && eveningScore !== undefined ? `${eveningScore}%` : 'ยังไม่ตรวจ'
+    const mText = morningScore !== null && morningScore !== undefined ? `\`${morningScore}%\`` : '`ยังไม่ตรวจ`'
+    const eText = eveningScore !== null && eveningScore !== undefined ? `\`${eveningScore}%\`` : '`ยังไม่ตรวจ`'
 
     const embed = {
       title: `🏥 สรุปตรวจความเรียบร้อยประจำวัน`,
@@ -156,6 +156,7 @@ export async function POST(req: Request) {
       fields: [
         { name: '☀️ รอบเช้า', value: `**${mText}**`, inline: true },
         { name: '🌙 รอบเย็น', value: `**${eText}**`, inline: true },
+        { name: '\u200b', value: '----------------------------------------', inline: false },
         { name: '⚠️ รายการค้างแก้ไข ณ วันนี้', value: issueText, inline: false },
       ],
       timestamp: new Date().toISOString(),
