@@ -111,6 +111,21 @@ export default function FormPage() {
     }
 
     setMessage('บันทึกผลตรวจเรียบร้อย ✓')
+
+    /*fetch('/api/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        clinicName: CLINIC_NAME,
+        period,
+        inspector,
+        score,
+        okItems,
+        totalItems,
+        date,
+      }),
+    }).catch((e) => console.error('Failed to send Discord notification:', e))
+    */
     setSectionState(freshSectionState())
     setInspector('')
   }
