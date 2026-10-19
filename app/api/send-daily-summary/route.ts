@@ -158,6 +158,7 @@ export async function POST(req: Request) {
         { name: '🌙 รอบเย็น', value: `**${eText}**`, inline: true },
         { name: '\u200b', value: '----------------------------------------', inline: false },
         { name: '⚠️ รายการค้างแก้ไข ณ วันนี้', value: issueText, inline: false },
+        {name: '\u200b', value: '🔗 [คลิกที่นี่เพื่อดูรายละเอียดบนเว็บ](https://red-smile-bp-inspection.vercel.app/dashboard)', inline: false }
       ],
       timestamp: new Date().toISOString(),
     }
